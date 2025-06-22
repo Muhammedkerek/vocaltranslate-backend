@@ -1,12 +1,14 @@
 const express = require("express");
 const app = express();
+
 const AudioToTextRoute = require("./Routes/AudioToTextRoute");
-const AuthRoute = require("../backend/Routes/AuthRoute");
-const TextToTextRoute = require("../backend/Routes/TextToTextRoute")
+const AuthRoute = require("./Routes/AuthRoute");
+const TextToTextRoute = require("./Routes/TextToTextRoute");
+const OnlineUsersRoute = require("./Routes/onlineUsersRoute");
+const audioToAudioRoutes = require("./Routes/AudioToAudioRoute");
+
 const cors = require("cors");
 const mongoose = require("mongoose");
-const OnlineUsersRoute = require("../backend/Routes/onlineUsersRoute");
-const audioToAudioRoutes = require("../backend/Routes/AudioToAudioRoute");
 
 
 // mongoose
