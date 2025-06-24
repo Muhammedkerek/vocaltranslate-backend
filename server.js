@@ -24,13 +24,20 @@ io.on("connection", (socket) => {
     console.log("Received from client:", msg);
     socket.emit("test-reply", "hello from server");
   });
+  socket.on("join-room", ({ roomId, userId }) => {
+    socket.join(roomId);
+    socket.to(roomId).emit("user-joined", { userId: socket.id });
+  });
 
   socket.on("test-audio", (audioBlob) => {
     io.emit("test-audio", audioBlob);
   });
 
-  socket.on("send-translated-audio", (audioBlob) => {
-    socket.broadcast.emit("receive-translated-audio", audioBlob);
+  socket.on("send-translated-audio", ({ audioBlob, to }) => {
+    const targetSocket = onlineUsers[to];
+    if (targetSocket) {
+      io.to(targetSocket).emit("receive-translated-audio", audioBlob);
+    }
   });
 
   socket.on("register", (userId) => {
