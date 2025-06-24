@@ -43,6 +43,7 @@ io.on("connection", (socket) => {
   socket.on("register", (userId) => {
     onlineUsers[userId] = socket.id;
     console.log("✅ Registered user:", userId, "→", socket.id);
+    console.log("📦 Current onlineUsers map:", onlineUsers);
   });
 
   socket.on("call-user", ({ from, to }) => {
@@ -52,12 +53,21 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("call-accepted", ({ from, to }) => {
-    const callerSocket = onlineUsers[to];
-    if (callerSocket) {
-      io.to(callerSocket).emit("call-accepted", { from });
-    }
-  });
+ socket.on("call-accepted", ({ from, to }) => {
+  const callerSocket = onlineUsers[to];
+  console.log("✅ Backend received call-accepted:");
+  console.log("   from:", from);
+  console.log("   to:", to);
+  console.log("   target caller socket:", callerSocket);
+  
+  if (callerSocket) {
+    io.to(callerSocket).emit("call-accepted", { from });
+    console.log("📨 Emitted 'call-accepted' to caller");
+  } else {
+    console.warn("⚠️ No socket found for caller userId:", to);
+  }
+});
+
 
   socket.on("call-declined", ({ from, to }) => {
     const callerSocket = onlineUsers[to];
