@@ -66,22 +66,22 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("webrtc-offer", ({ to, offer }) => {
+   socket.on("webrtc-offer", ({ to, from, sdp }) => {
     const targetSocket = onlineUsers[to];
     if (targetSocket) {
       io.to(targetSocket).emit("webrtc-offer", {
-        from: getUserIdBySocket(socket.id),
-        offer
+        from,
+        sdp,
       });
     }
   });
 
-  socket.on("webrtc-answer", ({ to, answer }) => {
+ socket.on("webrtc-answer", ({ to, from, sdp }) => {
     const targetSocket = onlineUsers[to];
     if (targetSocket) {
       io.to(targetSocket).emit("webrtc-answer", {
-        from: getUserIdBySocket(socket.id),
-        answer
+        from,
+        sdp,
       });
     }
   });
