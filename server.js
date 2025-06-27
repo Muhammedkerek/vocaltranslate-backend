@@ -33,12 +33,12 @@ io.on("connection", (socket) => {
     io.emit("test-audio", audioBlob);
   });
 
-  socket.on("send-translated-audio", ({ audioBlob, to }) => {
-    const targetSocket = onlineUsers[to];
-    if (targetSocket) {
-      io.to(targetSocket).emit("receive-translated-audio", audioBlob);
-    }
-  });
+ socket.on("send-translated-audio", ({ audioBase64, to }) => {
+  const targetSocket = onlineUsers[to];
+  if (targetSocket) {
+    io.to(targetSocket).emit("receive-translated-audio", audioBase64);
+  }
+});
 
   socket.on("register", (userId) => {
     onlineUsers[userId] = socket.id;
